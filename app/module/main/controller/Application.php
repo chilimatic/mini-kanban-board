@@ -1,19 +1,17 @@
 <?php
-/**
- *
- * @author j
- * Date: 12/29/14
- * Time: 5:49 PM
- *
- * File: chilimatic.class.php
- */
 
 namespace minikanban\app\module\main\controller;
 
+use chilimatic\lib\controller\HTTPController;
 use chilimatic\lib\di\ClosureFactory;
 use chilimatic\lib\view\AbstractView;
 
-class Application extends \chilimatic\lib\controller\HTTPController
+/**
+ * Class Application
+ *
+ * @package minikanban\app\module\main\controller
+ */
+class Application extends HTTPController
 {
     /**
      * @var mixed
