@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title><?php echo $this->pageTitle; ?></title>
+    <link rel="stylesheet" type="text/css" href="/vendor/bootstrap-css/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/vendor/bootstrap-css/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="/vendor/animate-css/animate.min.css" />
+
+    <script type="text/javascript" src="/js/lib/draganddrop.js"></script>
+    <script type="text/javascript">
+
+        document.addEventListener('DOMContentLoaded', function()
+        {
+            DragAndDrop.addDraggable(
+                document.getElementsByClassName('card'),
+                {
+                    'dragstart'   : {
+                        name: 'dragstart',
+                        callback: function (e)
+                        {
+                            e.dataTransfer.effectAllowed = 'all';
+                            elementDragged = this;
+                        }
+                    },
+                    'dragend'     : {
+                        name: 'dragend',
+                        callback: function (e)
+                        {
+                            elementDragged = null;
+                        }
+                    },
+                    /*drag        : {
+                        callback: function(e)
+                        {
+                            console.log('dafuqqqqqq');
+                        }
+                    }*/
+                }
+            );
+
+            DragAndDrop.addDropZone('.dropzone', {
+                drop : {
+                    name : 'drop',
+                    preventDefault: true,
+                    callback : function(e)
+                    {
+                        if (this.children.length == 0) {
+                            elementDragged.parentNode.removeChild(elementDragged);
+                            this.appendChild(elementDragged);
+                        } else {
+
+                        }
+
+                    }
+                },
+                dragover : {
+                    preventDefault: true,
+                    callback : function(e)
+                    {
+                        return false;
+                    }
+                },
+                dragenter : {
+                    name : 'dragenter',
+                    callback : function(e)
+                    {
+                        this.classList.add('active');
+                    }
+                },
+                dragleave : {
+                    name : 'dragleave',
+                    callback : function(e)
+                    {
+                        this.classList.remove('active');
+                    }
+                }
+            });
+        });
+    </script>
+    <style>
+        .active {
+            background-color: #d3d3d3;
+        }
+        .row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-around;
+            align-items: stretch;
+            width: 100%;
+        }
+        .col-sm-4 {
+            display: inline-flex;
+        }
+    </style>
+</head>
+<body>
+    <?php
+        $fragment = new \chilimatic\lib\view\PHtml();
+        echo $fragment->render(__DIR__ . '/fragment/navbar.phtml');
+    ?>
+    <a href="#" class="card" draggable="true" style="display: inline-block">
+        asdfasfdasfdasfds
+    </a>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 dropzone" style="border: 1px solid #333">
+                <div draggable="true" class="card">
+                    <h4>This is a Headline</h4>
+                    <p>
+                        this is some text inside of it
+                        <ul>
+                            <li>with</li>
+                            <li>a</li>
+                            <li>list</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-4 dropzone" style="border: 1px solid #333"></div>
+            <div class="col-sm-4 dropzone" style="border: 1px solid #333"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 dropzone" style="border: 1px solid #333">
+                <div draggable="true" class="card">
+                    <h4>This is a Headline</h4>
+                    <p>
+                        this is some text inside of it
+                    <ul>
+                        <li>with</li>
+                        <li>a</li>
+                        <li>list</li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-4 dropzone" style="border: 1px solid #333"></div>
+            <div class="col-sm-4 dropzone" style="border: 1px solid #333"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 dropzone" style="border: 1px solid #333">
+                <div draggable="true" class="card">
+                    <h4>This is a Headline</h4>
+                    <p>
+                        this is some text inside of it
+                        <ul>
+                            <li>with</li>
+                            <li>a</li>
+                            <li>list</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-4 dropzone" style="border: 1px solid #333"></div>
+            <div class="col-sm-4 dropzone" style="border: 1px solid #333"></div>
+        </div>
+    </div>
+
+</body>
+</html>

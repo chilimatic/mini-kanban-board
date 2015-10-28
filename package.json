@@ -1,0 +1,35 @@
+{
+  "name": "mini-kanban-board",
+  "version": "0.0.1",
+  "description": "A real simple kanban board",
+  "author": "Jakob Oberhummer <office@chilimatic.com>",
+  "contributors": [{
+    "name": "Jakob Oberhummer",
+    "email": "office@chilimatic.com"
+  }],
+  "scripts": {
+    "test": "",
+    "start": "",
+    "predeploy": "",
+    "postdeploy": "",
+    "prepublish": ""
+  },
+  "dependencies": {
+    "bower": "*",
+    "sass": "*",
+    "gulp": "*",
+    "gulp-sass": "*",
+    "gulp-minify-css": "*",
+    "gulp-jshint": "*",
+    "gulp-concat": "*",
+    "gulp-uglify": "*",
+    "gulp-livereload": "*",
+    "gulp-cache" : "*",
+    "gulp-notify" : "*",
+    "gulp-rename" : "*",
+    "del" : "*"
+  },
+  "subdomain": "kanban",
+  "analyze": true,
+  "license": "MIT"
+}
