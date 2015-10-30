@@ -1,0 +1,25 @@
+{
+  "name" : "chilimatic/mini-kanban-board",
+  "description" : "a small kanban board",
+  "version": "0.0.1",
+  "license" : "MIT",
+  "repositories": [
+    {
+      "type": "git",
+      "url" : "git@github.com:chilimatic/chilimatic-framework.git"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "4.5.*"
+  },
+  "require": {
+    "php": ">=5.5",
+    "chilimatic/framework" : "master"
+  },
+  "minimum-stability" : "dev",
+  "autoload": {
+    "psr-4": {
+      "minikanban\\app\\": "app/"
+    }
+  }
+}
