@@ -81,13 +81,11 @@ var DragAndDrop =
                 element.addEventListener(eventName, function(e) {
                     e.preventDefault();
                     config.callback.call(element, e)
-                    return false;
                 }.bind(config));
             } else {
                 element.addEventListener(eventName, function(e) {
-                    config.callback.call(element, e)
-                    return false;
-                }.bind(config))
+                    config.callback.call(element, e);
+                }.bind(config));
             }
 
         }.bind(element));

@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/vendor/bootstrap-css/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="/vendor/bootstrap-css/css/bootstrap-theme.min.css" />
     <link rel="stylesheet" type="text/css" href="/vendor/animate-css/animate.min.css" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script type="text/javascript" src="/js/lib/draganddrop.js"></script>
     <script type="text/javascript">
 
@@ -19,25 +19,28 @@
                         name: 'dragstart',
                         callback: function (e)
                         {
-                            e.dataTransfer.effectAllowed = 'all';
+                            e.dataTransfer.effectAllowed = 'move';
                             elementDragged = this;
+                            console.log('start');
                         }
                     },
                     'dragend'     : {
                         name: 'dragend',
                         callback: function (e)
                         {
+                            console.log('end');
                             elementDragged = null;
                         }
                     },
-                    /*drag        : {
+                    'drag'        : {
                         callback: function(e)
                         {
-                            console.log('dafuqqqqqq');
+                            console.log('drag');
                         }
-                    }*/
+                    }
                 }
             );
+
 
             DragAndDrop.addDropZone('.dropzone', {
                 drop : {
@@ -45,13 +48,9 @@
                     preventDefault: true,
                     callback : function(e)
                     {
-                        if (this.children.length == 0) {
-                            elementDragged.parentNode.removeChild(elementDragged);
-                            this.appendChild(elementDragged);
-                        } else {
-
-                        }
-
+                        elementDragged.parentNode.removeChild(elementDragged);
+                        this.appendChild(elementDragged);
+                        this.classList.remove('active');
                     }
                 },
                 dragover : {
@@ -77,22 +76,48 @@
                 }
             });
         });
+
+
+
     </script>
     <style>
         .active {
-            background-color: #d3d3d3;
+            opacity: 0.8 !important;
         }
-        .row {
+
+        .card {
+            padding: 5px;
+            cursor: pointer;
+            z-index: 9999;
+            display: inline-block;
+            max-width: 250px;
+            border: 1px solid #d3d3d3;
+            background-color: #fff;
+            border-radius: 5px;
+            margin: 8px;
+        }
+
+        .row.droprow {
             display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: space-around;
-            align-items: stretch;
+            min-height: 200px;
             width: 100%;
         }
         .col-sm-4 {
-            display: inline-flex;
+            padding: 5px;
         }
+
+        .col-sm-4.new {
+            background-color: #c1fac3;
+        }
+
+        .col-sm-4.in-progress {
+            background-color: #e5fab5;
+        }
+
+        .col-sm-4.done {
+            background-color: #e5fab5;
+        }
+
     </style>
 </head>
 <body>
@@ -100,60 +125,58 @@
         $fragment = new \chilimatic\lib\view\PHtml();
         echo $fragment->render(__DIR__ . '/fragment/navbar.phtml');
     ?>
-    <a href="#" class="card" draggable="true" style="display: inline-block">
-        asdfasfdasfdasfds
+
+    <div class="alert alert-info">
+        <button type="button" class="btn btn-default" aria-label="left Align">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add New Card
+        </button>
+    </div>
+    <div class="card" draggable="true" style="background-color: #aaa">
+
+    </div>
+<!-- not working template
+    <div class="card" draggable="true">
+        <h4>I Want to do stuff</h4>
+        <div>
+            this is some text inside of it
+            <ul>
+                <li>with</li>
+                <li>a</li>
+                <li>list</li>
+            </ul>
+        </div>
+    </div>
+    -->
+<!-- working template
+    <a class="card" draggable="true">
+        <h4>I Want to do stuff</h4>
+        <div>
+            this is some text inside of it
+            <ul>
+                <li>with</li>
+                <li>a</li>
+                <li>list</li>
+            </ul>
+        </div>
     </a>
-    <div class="container">
+-->
+
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-4 dropzone" style="border: 1px solid #333">
-                <div draggable="true" class="card">
-                    <h4>This is a Headline</h4>
-                    <p>
-                        this is some text inside of it
-                        <ul>
-                            <li>with</li>
-                            <li>a</li>
-                            <li>list</li>
-                        </ul>
-                    </p>
-                </div>
+            <div class="col-sm-4">
+                <h2>New</h2>
             </div>
-            <div class="col-sm-4 dropzone" style="border: 1px solid #333"></div>
-            <div class="col-sm-4 dropzone" style="border: 1px solid #333"></div>
+            <div class="col-sm-4">
+                <h2>In Progress</h2>
+            </div>
+            <div class="col-sm-4">
+                <h2>Done</h2>
+            </div>
         </div>
-        <div class="row">
-            <div class="col-sm-4 dropzone" style="border: 1px solid #333">
-                <div draggable="true" class="card">
-                    <h4>This is a Headline</h4>
-                    <p>
-                        this is some text inside of it
-                    <ul>
-                        <li>with</li>
-                        <li>a</li>
-                        <li>list</li>
-                    </ul>
-                    </p>
-                </div>
-            </div>
-            <div class="col-sm-4 dropzone" style="border: 1px solid #333"></div>
-            <div class="col-sm-4 dropzone" style="border: 1px solid #333"></div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4 dropzone" style="border: 1px solid #333">
-                <div draggable="true" class="card">
-                    <h4>This is a Headline</h4>
-                    <p>
-                        this is some text inside of it
-                        <ul>
-                            <li>with</li>
-                            <li>a</li>
-                            <li>list</li>
-                        </ul>
-                    </p>
-                </div>
-            </div>
-            <div class="col-sm-4 dropzone" style="border: 1px solid #333"></div>
-            <div class="col-sm-4 dropzone" style="border: 1px solid #333"></div>
+        <div class="row droprow">
+            <div class="col-sm-4 dropzone new"></div>
+            <div class="col-sm-4 dropzone in-progress"></div>
+            <div class="col-sm-4 dropzone done"></div>
         </div>
     </div>
 
