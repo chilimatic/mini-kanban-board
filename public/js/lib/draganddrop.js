@@ -24,7 +24,8 @@ var DragAndDrop =
      * @param element
      * @param {Object} configuration
      */
-    addDropZoneCollection: function (element, configuration) {
+    addDropZoneCollection: function (element, configuration)
+    {
         var eventArray = ['dragover', 'dragenter', 'dragleave', 'drop'];
         for (var i = 0; i < element.length; i++) {
             this.initEvents(element[i], configuration, eventArray);
@@ -36,9 +37,11 @@ var DragAndDrop =
      * @param element
      * @param {Object} configuration
      */
-    addDraggableCollection: function (element, configuration) {
+    addDraggableCollection: function (element, configuration)
+    {
         var eventArray = ['dragstart', 'dragend', 'drag'];
         for (var i = 0; i < element.length; i++) {
+            element[i].draggable = true;
             this.initEvents(element[i], configuration, eventArray);
             this.draggableList.push(element[i]);
         }
@@ -48,7 +51,8 @@ var DragAndDrop =
      * @param input
      * @param {Object} configuration
      */
-    addDropZone: function (input, configuration) {
+    addDropZone: function (input, configuration)
+    {
         this.polyMorphBehavior(
             input,
             configuration,
@@ -63,31 +67,21 @@ var DragAndDrop =
      *
      * @return void
      */
-    initEvents: function (element, configuration, eventArray) {
+    initEvents: function (element, configuration, eventArray)
+    {
         eventArray.map(function (eventName)
         {
             if (configuration[eventName] === undefined) {
                 return;
             }
             var config = configuration[eventName];
-            var noDefault = (config.preventDefault !== undefined && config.preventDefault === true);
 
             // no callback obviously no event attachment
             if (!config.callback) {
                 return;
             }
 
-            if (noDefault) {
-                element.addEventListener(eventName, function(e) {
-                    e.preventDefault();
-                    config.callback.call(element, e)
-                }.bind(config));
-            } else {
-                element.addEventListener(eventName, function(e) {
-                    config.callback.call(element, e);
-                }.bind(config));
-            }
-
+            element.addEventListener(eventName, config.callback, false);
         }.bind(element));
     },
 
@@ -110,7 +104,8 @@ var DragAndDrop =
      * @param {object} configuration
      * @param {function} callback
      */
-    polyMorphBehavior: function (input, configuration, callback) {
+    polyMorphBehavior: function (input, configuration, callback)
+    {
         if (!input || !configuration || !callback) {
             return;
         }
@@ -119,6 +114,12 @@ var DragAndDrop =
         var type = typeof input;
         switch (type) {
             case 'object':
+                if (input instanceof Element) {
+                    elementCollection = [input]
+                } else {
+                    elementCollection = input;
+                }
+                break;
             case 'array':
                 elementCollection = input;
                 break;
@@ -130,9 +131,11 @@ var DragAndDrop =
                 break;
         }
 
+
         if (!elementCollection) {
             return;
         }
+
         // dynamic call with self as reference otherwise "this" would be the window object
         callback.apply(this, [elementCollection, configuration]);
     }

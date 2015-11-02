@@ -27,6 +27,8 @@ gulp.task('styles', function() {
 
 
 gulp.task('scripts', function() {
+    del(['public/js/assets/*']);
+
     return gulp.src('public/js/**/*.js')
         .pipe(jshint('.jshintrc'))
         .pipe(jshint.reporter('default'))

@@ -7,87 +7,141 @@
     <link rel="stylesheet" type="text/css" href="/vendor/bootstrap-css/css/bootstrap-theme.min.css" />
     <link rel="stylesheet" type="text/css" href="/vendor/animate-css/animate.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script type="text/javascript" src="/js/lib/draganddrop.js"></script>
+    <script type="text/javascript" src="/js/assets/bundle.min.js"></script>
     <script type="text/javascript">
 
         document.addEventListener('DOMContentLoaded', function()
         {
-            DragAndDrop.addDraggable(
-                document.getElementsByClassName('card'),
+            var cardTemplate = {
+                'mainElement' :
                 {
-                    'dragstart'   : {
-                        name: 'dragstart',
-                        callback: function (e)
-                        {
-                            e.dataTransfer.effectAllowed = 'move';
-                            elementDragged = this;
-                            console.log('start');
-                        }
-                    },
-                    'dragend'     : {
-                        name: 'dragend',
-                        callback: function (e)
-                        {
-                            console.log('end');
-                            elementDragged = null;
-                        }
-                    },
-                    'drag'        : {
-                        callback: function(e)
-                        {
-                            console.log('drag');
+                    "type" : 'div',
+                    "className" : 'card animated tada'
+                },
+                'elementList' : [
+                    { type: 'h4', innerHTML: 'asdasd'},
+                    {
+                        type: 'div',
+                        innerHTML: 'asdasd',
+                        children : {
+                            type: 'ul',
+                            children : {
+                                type: 'li',
+                                innerHTML : 'asdfasdfsfd'
+                            }
                         }
                     }
-                }
-            );
+                ]
+            };
 
 
-            DragAndDrop.addDropZone('.dropzone', {
+            document.getElementById('new-card').addEventListener('click', function(e){
+                var card = CardBuilder.newCard(JSON.parse(JSON.stringify(cardTemplate)));
+                document.getElementById('new-col').appendChild(card.getCardElement());
+                DragAndDrop.addDraggable(card.getCardElement(), dragConfiguration);
+            });
+
+
+            var dropConfiguration = {
                 drop : {
-                    name : 'drop',
-                    preventDefault: true,
                     callback : function(e)
                     {
-                        elementDragged.parentNode.removeChild(elementDragged);
-                        this.appendChild(elementDragged);
+                        if (e.preventDefault) {
+                            e.preventDefault();
+                        }
+
+                        if (e.stopPropagation) {
+                            e.stopPropagation();
+                        }
+
+                        if (elementDragged != this) {
+                            elementDragged.parentNode.removeChild(elementDragged);
+                            this.appendChild(elementDragged);
+                        }
+
                         this.classList.remove('active');
+                        this.classList.remove('over');
+                        return false;
                     }
                 },
                 dragover : {
-                    preventDefault: true,
                     callback : function(e)
                     {
+                        if (e.preventDefault) {
+                            e.preventDefault();
+                        }
+
+                        e.dataTransfer.dropEffect = 'move';
+                        this.classList.add('drop');
                         return false;
                     }
                 },
                 dragenter : {
-                    name : 'dragenter',
                     callback : function(e)
                     {
+                        this.classList.add('over');
                         this.classList.add('active');
                     }
                 },
                 dragleave : {
-                    name : 'dragleave',
                     callback : function(e)
                     {
+                        this.classList.remove('over');
                         this.classList.remove('active');
                     }
                 }
-            });
+            };
+
+
+            var dragConfiguration = {
+                'dragstart'   : {
+                    callback: function (e)
+                    {
+                        e.dataTransfer.effectAllowed = 'move';
+                        elementDragged = this;
+                        this.classList.add('dragged');
+                        e.dataTransfer.setData('text/html', this.innerHTML);
+                    }
+                },
+                'dragend'     : {
+                    callback: function (e)
+                    {
+                        this.classList.remove('dragged');
+                        elementDragged = null;
+                    }
+                },
+                'drag'        : {
+                    callback: function(e)
+                    {
+
+                    }
+                }
+            };
+
+            DragAndDrop.addDropZone('.dropzone', dropConfiguration);
+
         });
 
 
 
     </script>
     <style>
+        [draggable] {
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+            /* Required to make elements draggable in old WebKit */
+            -khtml-user-drag: element;
+            -webkit-user-drag: element;
+        }
+
         .active {
             opacity: 0.8 !important;
         }
 
         .card {
             padding: 5px;
-            cursor: pointer;
             z-index: 9999;
             display: inline-block;
             max-width: 250px;
@@ -95,6 +149,13 @@
             background-color: #fff;
             border-radius: 5px;
             margin: 8px;
+            min-height: 100px;
+            min-width: 100px;
+            cursor: move;
+        }
+
+        .card.dragged {
+            opacity: 0.6;
         }
 
         .row.droprow {
@@ -102,6 +163,12 @@
             min-height: 200px;
             width: 100%;
         }
+
+        .over {
+            border: 2px dashed #888;
+            border-radius: 10px;
+        }
+
         .col-sm-4 {
             padding: 5px;
         }
@@ -127,39 +194,10 @@
     ?>
 
     <div class="alert alert-info">
-        <button type="button" class="btn btn-default" aria-label="left Align">
+        <button id="new-card" type="button" class="btn btn-default" aria-label="left Align">
             <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add New Card
         </button>
     </div>
-    <div class="card" draggable="true" style="background-color: #aaa">
-
-    </div>
-<!-- not working template
-    <div class="card" draggable="true">
-        <h4>I Want to do stuff</h4>
-        <div>
-            this is some text inside of it
-            <ul>
-                <li>with</li>
-                <li>a</li>
-                <li>list</li>
-            </ul>
-        </div>
-    </div>
-    -->
-<!-- working template
-    <a class="card" draggable="true">
-        <h4>I Want to do stuff</h4>
-        <div>
-            this is some text inside of it
-            <ul>
-                <li>with</li>
-                <li>a</li>
-                <li>list</li>
-            </ul>
-        </div>
-    </a>
--->
 
     <div class="container-fluid">
         <div class="row">
@@ -174,7 +212,7 @@
             </div>
         </div>
         <div class="row droprow">
-            <div class="col-sm-4 dropzone new"></div>
+            <div id="new-col" class="col-sm-4 dropzone new"></div>
             <div class="col-sm-4 dropzone in-progress"></div>
             <div class="col-sm-4 dropzone done"></div>
         </div>
