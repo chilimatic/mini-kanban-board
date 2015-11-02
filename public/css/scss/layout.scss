@@ -1,0 +1,57 @@
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+.active {
+  opacity: 0.8 !important;
+}
+
+.card {
+  padding: 5px;
+  z-index: 9999;
+  display: inline-block;
+  max-width: 250px;
+  border: 1px solid #d3d3d3;
+  background-color: #fff;
+  border-radius: 5px;
+  margin: 8px;
+  min-height: 100px;
+  min-width: 100px;
+  cursor: move;
+
+  &dragged {
+    opacity: 0.6;
+  }
+}
+
+.row {
+  &.droprow {
+    display: flex;
+    min-height: 200px;
+    width: 100%;
+
+    .over {
+      border: 2px dashed #888;
+      border-radius: 10px;
+    }
+  }
+}
+
+.col-sm-4 {
+  padding: 5px;
+  &.new {
+    background-color: #c1fac3;
+  }
+  &.in-progress {
+    background-color: #e5fab5;
+  }
+  &.done {
+    background-color: #e5fab5;
+  }
+}

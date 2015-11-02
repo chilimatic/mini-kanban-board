@@ -16,7 +16,7 @@ var gulp = require('gulp'),
     del = require('del');
 
 gulp.task('styles', function() {
-    return gulp.src('public/css/scss/*.scss')
+    return gulp.src('public/css/scss/**/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('public/css/assets'))
         .pipe(rename({suffix: '.min'}))
