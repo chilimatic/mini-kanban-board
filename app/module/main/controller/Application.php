@@ -18,6 +18,10 @@ class Application extends HTTPController
      */
     protected $session;
 
+    /**
+     * @var
+     */
+    private $user;
 
     /**
      * @param AbstractView $view
@@ -46,7 +50,9 @@ class Application extends HTTPController
      */
     public function loadUserFromSession()
     {
-
+        if ($this->session->user) {
+            $this->user = $this->session->user;
+        }
         return true;
     }
 
@@ -91,5 +97,12 @@ class Application extends HTTPController
             'call' => $jsCallback,
             'data' => $data
         ];
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getUser() {
+        return $this->user;
     }
 }

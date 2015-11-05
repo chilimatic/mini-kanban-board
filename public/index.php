@@ -21,6 +21,12 @@ try {
      */
     require_once APPLICATION_PATH . '/app/general/init.php';
 
+    $dispatcher->set('mongo', function($settings) use ($dispatcher) {
+        $config = $dispatcher->get('config');
+        return new MongoClient($config->get('mongo-dsn'));
+    });
+
+
     $application = new \chilimatic\lib\application\HTTPMVC($dispatcher, $dispatcher->get('config', [], true));
     // this is step so people can inject
     $application->init();
@@ -41,6 +47,6 @@ catch (Exception $e)
             )->send();
         }
     } else {
-        echo 'nothing to concern you with :)';
+        echo _('nothing to concern you with :)');
     }
 }

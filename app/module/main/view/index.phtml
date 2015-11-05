@@ -9,10 +9,38 @@
     <link rel="stylesheet" type="text/css" href="/css/assets/layout.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script type="text/javascript" src="/js/assets/bundle.min.js"></script>
+    <script>
+        var ax = new AjaxConnection();
+        var ax2 = new AjaxConnection();
+        ax.ajax(
+            {
+                'url': '/user/user/register',
+                'data' : {
+                    'username' : 'usertest1',
+                    'password' : 'adfasdf123123',
+                    'email'    : 'test@chilimatic.com'
+                }
+            }
+        );
+/*
+        ax2.ajax(
+            {
+                'url': '/user/user/login',
+                'data' : {
+                    'username' : 'usertest1',
+                    'password' : 'adfasdf123123'
+                }
+            }
+        )
+        */
+    </script>
 </head>
 <body>
     <?php
         $fragment = new \chilimatic\lib\view\PHtml();
+        if (isset($this->user)) {
+            $fragment->user = $this->user;
+        }
         echo $fragment->render(__DIR__ . '/fragment/navbar.phtml');
     ?>
 
@@ -21,7 +49,15 @@
             <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add New Card
         </button>
     </div>
-
+    <div class="navabar-login">
+        <?php if (!isset($this->user)): ?>
+            <div class="form-signin">
+                <input type="text" value="" placeholder="username" id="username" />
+                <input type="text" value="" placeholder="password" id="password" />
+                <button class="btn btn-lg" type="submit">Sign in</button>
+            </div>
+        <?php endif; ?>
+    </div>
     <div class="container-fluid">
         <div class="swim-lane row">
             <div class="col-sm-4">

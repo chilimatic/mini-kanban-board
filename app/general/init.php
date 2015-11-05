@@ -2,9 +2,18 @@
 
 date_default_timezone_set('Europe/Vienna');
 define('INCLUDE_ROOT', '/var/www/mini-kanban-board/');
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+ini_set("display_errors", 1);
+
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+define('APPLICATION_PATH', realpath(__DIR__.'/../../'));
 
 set_exception_handler(function($e)
 {
+    /**
+     * @var \Exception $e
+     */
     echo $e->getMessage();
     echo $e->getTraceAsString();
 });
@@ -37,14 +46,7 @@ try
 
     if (!isset($_SERVER['SHELL']))
     {
-        /**
-         * set the current protocol SSL or normal
-         */
         $config->set('protocol',(string) ($_SERVER ['SERVER_PORT'] == '443') ? 'https://' : 'http://');
-
-        /**
-         * set the current default url
-         */
         $config->set('base_url', (string) $config->get('protocol') . (string) $_SERVER ['HTTP_HOST']);
     }
 

@@ -11,6 +11,23 @@
         'view' => function($setting = []) {
             return new \chilimatic\lib\view\PHtml();
         },
+        'mongo' => function ($settings = []) {
+            return new MongoClient($settings['dsn'], $settings['options'], $settings['driver_options']);
+        },
+        'user-db' => function($settings = []) {
+            $connection =  \chilimatic\lib\di\ClosureFactory::getInstance()->get('mongo', [], true);
+            return $connection->user;
+        },
+        'user-collection' => function ($settings = []) {
+            $db = \chilimatic\lib\di\ClosureFactory::getInstance()->get('user-db', [], true);
+            return $db->createCollection('user');
+        },
+        'document-manager' => function($settings = []) {
+            return new \chilimatic\lib\database\mongo\odm\DocumentManager(
+                \chilimatic\lib\di\ClosureFactory::getInstance()->get('mongo', [], true),
+                new \chilimatic\lib\parser\annotation\AnnotationOdmParser()
+            );
+        },
         'db' => function($setting = []) {
             return new PDO($setting['dns'], $setting['username'], $setting['password']);
         },
@@ -39,4 +56,9 @@
                 new \chilimatic\lib\log\client\PrintOutWebTemplate()
             );
         },
+        'authentication-service' => function($setting = []){
+            return new \minikanban\app\module\user\service\Authentication(
+                \chilimatic\lib\di\ClosureFactory::getInstance()->get('session', [], true)
+            );
+        }
     ];
